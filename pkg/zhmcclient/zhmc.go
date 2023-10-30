@@ -74,7 +74,7 @@ func (m *ZhmcManager) GetCPCProperties(cpcURI string) (*CPCProperties, int, *Hmc
 func (m *ZhmcManager) ListLPARs(cpcURI string, query map[string]string) ([]LPAR, int, *HmcError) {
 	return m.lparManager.ListLPARs(cpcURI, query)
 }
-func (m *ZhmcManager) GetLparProperties(lparURI string) (*LparProperties, int, *HmcError) {
+func (m *ZhmcManager) GetLparProperties(lparURI string) (*LparObjectProperties, int, *HmcError) {
 	return m.lparManager.GetLparProperties(lparURI)
 }
 func (m *ZhmcManager) UpdateLparProperties(lparURI string, props *LparProperties) (int, *HmcError) {
@@ -118,8 +118,12 @@ func (m *ZhmcManager) GetEnergyDetailsforLPAR(lparURI string, props *EnergyReque
 	return m.lparManager.GetEnergyDetailsforLPAR(lparURI, props)
 }
 
+func (m *ZhmcManager) AttachCryptoToPartition(lparURI string, request *CryptoConfig) (int, *HmcError) {
+	return m.lparManager.AttachCryptoToPartition(lparURI, request)
+}
+
 func (m *ZhmcManager) GetLiveEnergyDetailsforLPAR(lparURI string) (uint64, int, *HmcError) {
-	 return m.metricsManager.GetLiveEnergyDetailsforLPAR(lparURI)
+	return m.metricsManager.GetLiveEnergyDetailsforLPAR(lparURI)
 }
 
 // Adapter

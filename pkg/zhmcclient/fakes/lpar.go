@@ -8,6 +8,20 @@ import (
 )
 
 type LparAPI struct {
+	AttachCryptoToPartitionStub        func(string, *zhmcclient.CryptoConfig) (int, *zhmcclient.HmcError)
+	attachCryptoToPartitionMutex       sync.RWMutex
+	attachCryptoToPartitionArgsForCall []struct {
+		arg1 string
+		arg2 *zhmcclient.CryptoConfig
+	}
+	attachCryptoToPartitionReturns struct {
+		result1 int
+		result2 *zhmcclient.HmcError
+	}
+	attachCryptoToPartitionReturnsOnCall map[int]struct {
+		result1 int
+		result2 *zhmcclient.HmcError
+	}
 	AttachStorageGroupToPartitionStub        func(string, *zhmcclient.StorageGroupPayload) (int, *zhmcclient.HmcError)
 	attachStorageGroupToPartitionMutex       sync.RWMutex
 	attachStorageGroupToPartitionArgsForCall []struct {
@@ -97,18 +111,18 @@ type LparAPI struct {
 		result2 int
 		result3 *zhmcclient.HmcError
 	}
-	GetLparPropertiesStub        func(string) (*zhmcclient.LparProperties, int, *zhmcclient.HmcError)
+	GetLparPropertiesStub        func(string) (*zhmcclient.LparObjectProperties, int, *zhmcclient.HmcError)
 	getLparPropertiesMutex       sync.RWMutex
 	getLparPropertiesArgsForCall []struct {
 		arg1 string
 	}
 	getLparPropertiesReturns struct {
-		result1 *zhmcclient.LparProperties
+		result1 *zhmcclient.LparObjectProperties
 		result2 int
 		result3 *zhmcclient.HmcError
 	}
 	getLparPropertiesReturnsOnCall map[int]struct {
-		result1 *zhmcclient.LparProperties
+		result1 *zhmcclient.LparObjectProperties
 		result2 int
 		result3 *zhmcclient.HmcError
 	}
@@ -217,6 +231,71 @@ type LparAPI struct {
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
+}
+
+func (fake *LparAPI) AttachCryptoToPartition(arg1 string, arg2 *zhmcclient.CryptoConfig) (int, *zhmcclient.HmcError) {
+	fake.attachCryptoToPartitionMutex.Lock()
+	ret, specificReturn := fake.attachCryptoToPartitionReturnsOnCall[len(fake.attachCryptoToPartitionArgsForCall)]
+	fake.attachCryptoToPartitionArgsForCall = append(fake.attachCryptoToPartitionArgsForCall, struct {
+		arg1 string
+		arg2 *zhmcclient.CryptoConfig
+	}{arg1, arg2})
+	stub := fake.AttachCryptoToPartitionStub
+	fakeReturns := fake.attachCryptoToPartitionReturns
+	fake.recordInvocation("AttachCryptoToPartition", []interface{}{arg1, arg2})
+	fake.attachCryptoToPartitionMutex.Unlock()
+	if stub != nil {
+		return stub(arg1, arg2)
+	}
+	if specificReturn {
+		return ret.result1, ret.result2
+	}
+	return fakeReturns.result1, fakeReturns.result2
+}
+
+func (fake *LparAPI) AttachCryptoToPartitionCallCount() int {
+	fake.attachCryptoToPartitionMutex.RLock()
+	defer fake.attachCryptoToPartitionMutex.RUnlock()
+	return len(fake.attachCryptoToPartitionArgsForCall)
+}
+
+func (fake *LparAPI) AttachCryptoToPartitionCalls(stub func(string, *zhmcclient.CryptoConfig) (int, *zhmcclient.HmcError)) {
+	fake.attachCryptoToPartitionMutex.Lock()
+	defer fake.attachCryptoToPartitionMutex.Unlock()
+	fake.AttachCryptoToPartitionStub = stub
+}
+
+func (fake *LparAPI) AttachCryptoToPartitionArgsForCall(i int) (string, *zhmcclient.CryptoConfig) {
+	fake.attachCryptoToPartitionMutex.RLock()
+	defer fake.attachCryptoToPartitionMutex.RUnlock()
+	argsForCall := fake.attachCryptoToPartitionArgsForCall[i]
+	return argsForCall.arg1, argsForCall.arg2
+}
+
+func (fake *LparAPI) AttachCryptoToPartitionReturns(result1 int, result2 *zhmcclient.HmcError) {
+	fake.attachCryptoToPartitionMutex.Lock()
+	defer fake.attachCryptoToPartitionMutex.Unlock()
+	fake.AttachCryptoToPartitionStub = nil
+	fake.attachCryptoToPartitionReturns = struct {
+		result1 int
+		result2 *zhmcclient.HmcError
+	}{result1, result2}
+}
+
+func (fake *LparAPI) AttachCryptoToPartitionReturnsOnCall(i int, result1 int, result2 *zhmcclient.HmcError) {
+	fake.attachCryptoToPartitionMutex.Lock()
+	defer fake.attachCryptoToPartitionMutex.Unlock()
+	fake.AttachCryptoToPartitionStub = nil
+	if fake.attachCryptoToPartitionReturnsOnCall == nil {
+		fake.attachCryptoToPartitionReturnsOnCall = make(map[int]struct {
+			result1 int
+			result2 *zhmcclient.HmcError
+		})
+	}
+	fake.attachCryptoToPartitionReturnsOnCall[i] = struct {
+		result1 int
+		result2 *zhmcclient.HmcError
+	}{result1, result2}
 }
 
 func (fake *LparAPI) AttachStorageGroupToPartition(arg1 string, arg2 *zhmcclient.StorageGroupPayload) (int, *zhmcclient.HmcError) {
@@ -617,7 +696,7 @@ func (fake *LparAPI) GetEnergyDetailsforLPARReturnsOnCall(i int, result1 uint64,
 	}{result1, result2, result3}
 }
 
-func (fake *LparAPI) GetLparProperties(arg1 string) (*zhmcclient.LparProperties, int, *zhmcclient.HmcError) {
+func (fake *LparAPI) GetLparProperties(arg1 string) (*zhmcclient.LparObjectProperties, int, *zhmcclient.HmcError) {
 	fake.getLparPropertiesMutex.Lock()
 	ret, specificReturn := fake.getLparPropertiesReturnsOnCall[len(fake.getLparPropertiesArgsForCall)]
 	fake.getLparPropertiesArgsForCall = append(fake.getLparPropertiesArgsForCall, struct {
@@ -642,7 +721,7 @@ func (fake *LparAPI) GetLparPropertiesCallCount() int {
 	return len(fake.getLparPropertiesArgsForCall)
 }
 
-func (fake *LparAPI) GetLparPropertiesCalls(stub func(string) (*zhmcclient.LparProperties, int, *zhmcclient.HmcError)) {
+func (fake *LparAPI) GetLparPropertiesCalls(stub func(string) (*zhmcclient.LparObjectProperties, int, *zhmcclient.HmcError)) {
 	fake.getLparPropertiesMutex.Lock()
 	defer fake.getLparPropertiesMutex.Unlock()
 	fake.GetLparPropertiesStub = stub
@@ -655,30 +734,30 @@ func (fake *LparAPI) GetLparPropertiesArgsForCall(i int) string {
 	return argsForCall.arg1
 }
 
-func (fake *LparAPI) GetLparPropertiesReturns(result1 *zhmcclient.LparProperties, result2 int, result3 *zhmcclient.HmcError) {
+func (fake *LparAPI) GetLparPropertiesReturns(result1 *zhmcclient.LparObjectProperties, result2 int, result3 *zhmcclient.HmcError) {
 	fake.getLparPropertiesMutex.Lock()
 	defer fake.getLparPropertiesMutex.Unlock()
 	fake.GetLparPropertiesStub = nil
 	fake.getLparPropertiesReturns = struct {
-		result1 *zhmcclient.LparProperties
+		result1 *zhmcclient.LparObjectProperties
 		result2 int
 		result3 *zhmcclient.HmcError
 	}{result1, result2, result3}
 }
 
-func (fake *LparAPI) GetLparPropertiesReturnsOnCall(i int, result1 *zhmcclient.LparProperties, result2 int, result3 *zhmcclient.HmcError) {
+func (fake *LparAPI) GetLparPropertiesReturnsOnCall(i int, result1 *zhmcclient.LparObjectProperties, result2 int, result3 *zhmcclient.HmcError) {
 	fake.getLparPropertiesMutex.Lock()
 	defer fake.getLparPropertiesMutex.Unlock()
 	fake.GetLparPropertiesStub = nil
 	if fake.getLparPropertiesReturnsOnCall == nil {
 		fake.getLparPropertiesReturnsOnCall = make(map[int]struct {
-			result1 *zhmcclient.LparProperties
+			result1 *zhmcclient.LparObjectProperties
 			result2 int
 			result3 *zhmcclient.HmcError
 		})
 	}
 	fake.getLparPropertiesReturnsOnCall[i] = struct {
-		result1 *zhmcclient.LparProperties
+		result1 *zhmcclient.LparObjectProperties
 		result2 int
 		result3 *zhmcclient.HmcError
 	}{result1, result2, result3}
@@ -1151,6 +1230,8 @@ func (fake *LparAPI) UpdateLparPropertiesReturnsOnCall(i int, result1 int, resul
 func (fake *LparAPI) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
+	fake.attachCryptoToPartitionMutex.RLock()
+	defer fake.attachCryptoToPartitionMutex.RUnlock()
 	fake.attachStorageGroupToPartitionMutex.RLock()
 	defer fake.attachStorageGroupToPartitionMutex.RUnlock()
 	fake.createLPARMutex.RLock()
