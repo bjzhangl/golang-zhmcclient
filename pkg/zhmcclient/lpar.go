@@ -172,6 +172,7 @@ func (m *LparManager) CreateLPAR(cpcURI string, props *LparProperties) (string, 
 
 	logger.Info(fmt.Sprintf("Request URL: %v, Method: %v", requestUrl, http.MethodPost))
 	status, responseBody, err := m.client.ExecuteRequest(http.MethodPost, requestUrl, props, "")
+	logger.Info(fmt.Sprintf("LparProperties: %v", responseBody))
 	if err != nil {
 		logger.Error("error on getting lpar's",
 			zap.String("request url", fmt.Sprint(requestUrl)),
