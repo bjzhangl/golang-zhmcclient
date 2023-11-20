@@ -414,7 +414,7 @@ func CreatePartition(hmcManager zhmcclient.ZhmcAPI) {
 	} else {
 		processorMode = zhmcclient.PROCESSOR_MODE_DEDICATED
 	}
-	props := &zhmcclient.LparProperties{
+	props := &zhmcclient.LparCreateProperties{
 		Name:          parName,
 		IflProcessors: iflProcessor,
 		InitialMemory: initialMemory,

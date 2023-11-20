@@ -28,7 +28,7 @@ import (
 //
 //go:generate counterfeiter -o fakes/lpar.go --fake-name LparAPI . LparAPI
 type LparAPI interface {
-	CreateLPAR(cpcURI string, props *LparProperties) (string, int, *HmcError)
+	CreateLPAR(cpcURI string, props *LparCreateProperties) (string, int, *HmcError)
 	ListLPARs(cpcURI string, query map[string]string) ([]LPAR, int, *HmcError)
 	GetLparProperties(lparURI string) (*LparProperties, int, *HmcError)
 	UpdateLparProperties(lparURI string, props *LparProperties) (int, *HmcError)
@@ -166,12 +166,13 @@ func (m *LparManager) GetLparProperties(lparURI string) (*LparProperties, int, *
 * Return: 200 and object-uri string
 *     or: 400, 404, 409
  */
-func (m *LparManager) CreateLPAR(cpcURI string, props *LparProperties) (string, int, *HmcError) {
+func (m *LparManager) CreateLPAR(cpcURI string, props *LparCreateProperties) (string, int, *HmcError) {
 	requestUrl := m.client.CloneEndpointURL()
 	requestUrl.Path = path.Join(requestUrl.Path, cpcURI, "/partitions")
 
 	logger.Info(fmt.Sprintf("Request URL: %v, Method: %v", requestUrl, http.MethodPost))
 	status, responseBody, err := m.client.ExecuteRequest(http.MethodPost, requestUrl, props, "")
+	logger.Info(fmt.Sprintf("LparCreateResponseBody: %v", string(responseBody)))
 	if err != nil {
 		logger.Error("error on getting lpar's",
 			zap.String("request url", fmt.Sprint(requestUrl)),
@@ -182,7 +183,7 @@ func (m *LparManager) CreateLPAR(cpcURI string, props *LparProperties) (string, 
 	}
 
 	if status == http.StatusCreated {
-		responseObj := LparProperties{}
+		responseObj := LparCreateProperties{}
 		err := json.Unmarshal(responseBody, &responseObj)
 		if err != nil {
 			return "", status, getHmcErrorFromErr(ERR_CODE_HMC_UNMARSHAL_FAIL, err)

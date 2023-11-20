@@ -243,12 +243,12 @@ var _ = Describe("LPAR", func() {
 
 	Describe("CreateLPAR", func() {
 		var (
-			payload       *LparProperties
+			payload       *LparCreateProperties
 			bytesResponse []byte
 		)
 
 		BeforeEach(func() {
-			payload = &LparProperties{
+			payload = &LparCreateProperties{
 				URI:                        "uri",
 				CpcURI:                     "cpcuri",
 				Class:                      "partition",

@@ -65,11 +65,11 @@ type ZhmcAPI struct {
 		result2 int
 		result3 *zhmcclient.HmcError
 	}
-	CreateLPARStub        func(string, *zhmcclient.LparProperties) (string, int, *zhmcclient.HmcError)
+	CreateLPARStub        func(string, *zhmcclient.LparCreateProperties) (string, int, *zhmcclient.HmcError)
 	createLPARMutex       sync.RWMutex
 	createLPARArgsForCall []struct {
 		arg1 string
-		arg2 *zhmcclient.LparProperties
+		arg2 *zhmcclient.LparCreateProperties
 	}
 	createLPARReturns struct {
 		result1 string
@@ -894,12 +894,12 @@ func (fake *ZhmcAPI) CreateHipersocketReturnsOnCall(i int, result1 string, resul
 	}{result1, result2, result3}
 }
 
-func (fake *ZhmcAPI) CreateLPAR(arg1 string, arg2 *zhmcclient.LparProperties) (string, int, *zhmcclient.HmcError) {
+func (fake *ZhmcAPI) CreateLPAR(arg1 string, arg2 *zhmcclient.LparCreateProperties) (string, int, *zhmcclient.HmcError) {
 	fake.createLPARMutex.Lock()
 	ret, specificReturn := fake.createLPARReturnsOnCall[len(fake.createLPARArgsForCall)]
 	fake.createLPARArgsForCall = append(fake.createLPARArgsForCall, struct {
 		arg1 string
-		arg2 *zhmcclient.LparProperties
+		arg2 *zhmcclient.LparCreateProperties
 	}{arg1, arg2})
 	stub := fake.CreateLPARStub
 	fakeReturns := fake.createLPARReturns
@@ -920,13 +920,13 @@ func (fake *ZhmcAPI) CreateLPARCallCount() int {
 	return len(fake.createLPARArgsForCall)
 }
 
-func (fake *ZhmcAPI) CreateLPARCalls(stub func(string, *zhmcclient.LparProperties) (string, int, *zhmcclient.HmcError)) {
+func (fake *ZhmcAPI) CreateLPARCalls(stub func(string, *zhmcclient.LparCreateProperties) (string, int, *zhmcclient.HmcError)) {
 	fake.createLPARMutex.Lock()
 	defer fake.createLPARMutex.Unlock()
 	fake.CreateLPARStub = stub
 }
 
-func (fake *ZhmcAPI) CreateLPARArgsForCall(i int) (string, *zhmcclient.LparProperties) {
+func (fake *ZhmcAPI) CreateLPARArgsForCall(i int) (string, *zhmcclient.LparCreateProperties) {
 	fake.createLPARMutex.RLock()
 	defer fake.createLPARMutex.RUnlock()
 	argsForCall := fake.createLPARArgsForCall[i]
