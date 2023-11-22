@@ -68,9 +68,9 @@ type HTTPClient interface {
 }
 
 const (
-	SESSION_HEADER_NAME = "X-API-Session"
+	SESSION_HEADER_NAME         = "X-API-Session"
 	minHMCMetricsSampleInterval = 15 //seconds
-	metricsContextCreationURI = "/api/services/metrics/context"
+	metricsContextCreationURI   = "/api/services/metrics/context"
 )
 
 type Options struct {
@@ -487,7 +487,9 @@ func (c *Client) executeMethod(requestType string, urlStr string, requestData in
 	var err error
 
 	if requestData != nil {
+		logger.Info(fmt.Sprintf("request data is: %v", requestData))
 		requestBody, err = json.Marshal(requestData)
+		logger.Info(fmt.Sprintf("request body is: %v", requestBody))
 		if err != nil {
 			return -1, nil, getHmcErrorFromErr(ERR_CODE_HMC_MARSHAL_FAIL, err)
 		}
@@ -624,7 +626,7 @@ func (c *Client) createMetricsContext(metricsGroups []string) error {
 
 	c.metricsContext, _ = newMetricsContext(mcResp)
 	logger.Info("Create 'MetricsContext'")
-	
+
 	return nil
 }
 
